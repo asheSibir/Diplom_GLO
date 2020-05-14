@@ -11,6 +11,7 @@ const movePopUp = () => {
         };
         const hideEl = (el) => {
             el.style.display = 'none';
+            el.querySelectorAll('input').forEach(input => input.value = '')
         };
 
         contacts.forEach(block => {
