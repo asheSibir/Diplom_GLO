@@ -28,26 +28,17 @@ const sendData = () => {
                 if (ev.target.matches('[name="user_name"]')){
                     if (/[\da-z\.\?\,!:;^%$#@\(\)\*_\+\=№'"!\/]/gi.test(ev.target.value)){
                         showMistake(target, ev.target);
-                        //ev.target.value = target.replace(/[\da-z\.\?\,!:;^%$#@\(\)\*_\+\=№'"!\/]/gi, '');
                     } else {
                         hideMistake(target, ev.target);
                     }
                     
                 }
                 if (ev.target.matches('[name="user_phone"]')){
-                    if(ev.target.value.length === 1){
-                        if (!/[\d+]/.test(target)){
-                            showMistake(target, ev.target);
-                        } else {
-                            hideMistake(target, ev.target);
-                        }
-                    }
-                    if(ev.target.value.length > 1){
-                        if (!/\d/.test(target.slice(-2,-1))){
-                            showMistake(target, ev.target);
-                        } else {
-                            hideMistake(target, ev.target);
-                        }
+                    if (/[a-z\s\-\.\?\,!:;^%$#@\(\)\*_\=#'"\/]/g.test(target) || 
+                    /[a-z\s\-\.\?\,!:;^%$#@\(\)\*_\=#'"\/]/g.test(target.slice(-1))){
+                        showMistake(target, ev.target);
+                    } else {
+                        hideMistake(target, ev.target);
                     }
                 }
             });
