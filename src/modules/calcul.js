@@ -29,8 +29,7 @@ const calcul = () => {
         getBlocks();
         //работа калькулятора
         const calc = (price) => {
-            const result = document.getElementById('calc-result'),
-            onoffswitch = document.querySelector('.onoffswitch'),
+            const onoffswitch = document.querySelector('.onoffswitch'),
             onoffswitchSwitch = onoffswitch.querySelector('.onoffswitch-switch'),
             onoffswitchInner = onoffswitch.querySelector('.onoffswitch-inner'),
             blockTwo = document.getElementById('collapseTwo'),
@@ -44,9 +43,11 @@ const calcul = () => {
             onoffswitch.addEventListener('click', (ev)=>{
                 if(onoffswitchSwitch.style.right === '' || onoffswitchSwitch.style.right === '0px'){
                     onoffswitchSwitch.style.right = '82px';
+                    secondSump.classList.add('hidden');
                     secondSump.style.display = 'none';
                 } else {
                     onoffswitchSwitch.style.right = '0px';
+                    secondSump.classList.remove('hidden');
                     secondSump.style.display = 'block';
                 }
             });
@@ -55,46 +56,87 @@ const calcul = () => {
             if(stBef.content === 'Одно'){
                 camera = 1;
             }
-            //Кольца
-            const getRingPrice = () => {
-                const infoRings = blockTwo.querySelectorAll('select');
-                let factor;
-                
-                infoRings.forEach((select, ind) => {
-                    select.addEventListener('change', (ev) => {
-                        const value = select.value;
-                        if(ind === 0){
-                            sessionStorage.diaFst = encodeURI(value.replace(/\D*/g, ''));
+            //Калькулятор
+            const count = (price = 10000) => {
+                const infoRings = blockTwo.querySelectorAll('select'),
+                calcResult = document.getElementById('calc-result'),
+                incomeData = document.getElementById('collapseTwo'),
+                selectBoxes = incomeData.querySelectorAll('.select-box'),
+                diaFst = selectBoxes[0],
+                diaSnd = selectBoxes[2],
+                ringsFst = selectBoxes[1],
+                ringsSnd = selectBoxes[3],
+                nextStepBtn = incomeData.querySelector('.construct-btn');
+                //получить все поля ввода и результатное поле
+
+                const doCount = () => {
+                    let total = 0,
+                        diaMarkup = 1,
+                        ringsMarkup = 1;
+                    //Учитываем диаметр
+                    if (window.getComputedStyle(secondSump).display === 'none'){
+                        if (diaFst.children[1].value === '2 метра'){
+                            diaMarkup = 1.2;
+                        } else {
+                            diaMarkup = 1;
                         }
-                        if(ind === 1){
-                            sessionStorage.qtyFst = encodeURI(value.replace(/\D*/g, ''));
+                    } else if (window.getComputedStyle(secondSump).display === 'block') {
+                        if (diaSnd.children[1].value === '2 метра'){
+                            diaMarkup = 1.8;
+                        } else {
+                            diaMarkup = 1.5; 
                         }
-                        if(ind === 2){
-                            sessionStorage.diaSec = encodeURI(value.replace(/\D*/g, ''));
+                    } 
+                    //Учитываем количество колец
+                    if (window.getComputedStyle(secondSump).display === 'none'){
+                        if (ringsFst.children[1].value === '2 штуки'){
+                            ringsMarkup = 1.3;
+                        } else if (ringsFst.children[1].value === '3 штуки'){
+                            ringsMarkup = 1.5;
                         }
-                        if(ind === 3){
-                            sessionStorage.qtySec = encodeURI(value.replace(/\D*/g, ''));
+                    } else if (window.getComputedStyle(secondSump).display === 'block') {
+                        if (ringsSnd.children[1].value === '2 штуки'){
+                            ringsMarkup = 1.3;
+                        } else if (ringsSnd.children[1].value === '3 штуки'){
+                            ringsMarkup = 1.5;
                         }
-                    });
+                    }
+                    
+                    total = price * diaMarkup * ringsMarkup;
+                    calcResult.value = Math.ceil(total);
+                };
+                //Расчет по индивидуальным параметрам
+                incomeData.addEventListener('change', (ev) => {
+                    let target = ev.target;
+                    target = target.closest('.form-control');
+                    if (target) {
+                        doCount(calcResult);
+                    } 
+                });
+                //Расчет без изменения данных
+                nextStepBtn.addEventListener('click', (ev) => {
+                    if (ev.target){
+                        if(calcResult.value === ''){
+                            doCount(calcResult);
+                        }
+                    }
+                });
+                //Запуск расчета при изменениях
+                accordion.addEventListener('click', (ev) => {
+                    const target = ev.target;
+                    if (calcResult.value !== ''){
+                        if (target === onoffswitchSwitch){ //если вернулись к кольцам
+                            doCount(calcResult);
+                        }
+                        console.log(target.classList.contains('onoffswitch-switch'));
+                    }
                 });
 
-                let diaFst = decodeURI(sessionStorage.diaFst),
-                    qtyFst = decodeURI(sessionStorage.qtyFst),
-                    diaSec = decodeURI(sessionStorage.diaSec),
-                    qtySec = decodeURI(sessionStorage.qtySec);
-                
-                    console.log(diaFst, qtyFst, diaSec, qtySec);
-
-                factor = 1;
-                console.log(decodeURI(sessionStorage.diaFst));
-                return factor;
             };
-            rings = getRingPrice();
-            console.log(rings);
+            count(10000);
 
-            result.value = price * camera;
         };
-        calc(10000);
+        calc();
 
     }catch(e){
         console.warn(e);
