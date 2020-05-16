@@ -1,7 +1,11 @@
 const calcul = () => {
     try{
         console.log('подключение калькулятора');
-        const accordion = document.getElementById('accordion');
+        const accordion = document.getElementById('accordion'),
+        collapseThree = document.getElementById('collapseThree'),
+        bottom = document.createElement('span'),
+        qtyCam = document.createElement('span');
+        
         //переключение блоков
         const getBlocks = () => {
             accordion.addEventListener('click', (ev)=> {
@@ -24,6 +28,17 @@ const calcul = () => {
                         current.parentNode.children[1].classList.add('in');
                     }
                 }
+                if(!target.closest('.panel-three') || target.innerText === 'Следующий шаг'){
+                    bottom.style.display = 'none'; 
+                } else {
+                    bottom.style.display = 'block';
+                } 
+                if(!target.closest('.panel-one') || target.innerText === 'Следующий шаг'){
+                    qtyCam.style.display = 'none';
+                } else {
+                    qtyCam.style.display = 'block';
+                }
+                
             });
         };
         getBlocks();
@@ -34,28 +49,72 @@ const calcul = () => {
             onoffswitchInner = onoffswitch.querySelector('.onoffswitch-inner'),
             blockTwo = document.getElementById('collapseTwo'),
             secondSump = document.getElementById('second');
+            secondSump.style.display = 'block';
 
-            let camera,
-                diametr,
-                rings,
-                buttom;
-            //количество камер          
+            //Работа бегунка
+            const moveEl = (el, inPos, nextPos) => {
+                if (el.style.right === '' || el.style.right === `${inPos}%`){
+                    el.style.right = `${nextPos}%`;
+                } else if (el.style.right === `${nextPos}%`){
+                    el.style.right = `${inPos}%`;
+                }
+            };
+
+            //Количество колодцев    
+            accordion.children[0].insertAdjacentElement('beforeend', qtyCam);
+            qtyCam.id = 'cameraSpan';
+            qtyCam.textContent = 'Двух';
+            qtyCam.classList.add('green-label');
+            qtyCam.style.cssText = `
+            top: 22%;
+            left: 42%;
+            `;
+            //Выбор количества колодцев
             onoffswitch.addEventListener('click', (ev)=>{
-                if(onoffswitchSwitch.style.right === '' || onoffswitchSwitch.style.right === '0px'){
-                    onoffswitchSwitch.style.right = '82px';
+                moveEl(onoffswitchSwitch, 0, 67);
+                if(onoffswitchSwitch.style.right === '67%'){
                     secondSump.classList.add('hidden');
-                    secondSump.style.display = 'none';
+                    qtyCam.textContent = 'Одно';
+                    qtyCam.style.left = '48%';
+                    
                 } else {
-                    onoffswitchSwitch.style.right = '0px';
+                    onoffswitchSwitch.style.right = '0%';
                     secondSump.classList.remove('hidden');
-                    secondSump.style.display = 'block';
+                    qtyCam.textContent = 'Двух';
+                    qtyCam.style.left = '42%';
+                }
+                
+            });
+            const setLabel = (parent, textF, textS) => {
+
+            };
+            
+            //Указываем днище
+            accordion.children[2].insertAdjacentElement('beforeend', bottom);
+            bottom.id = 'bottomExist';
+            bottom.classList.add('green-label');
+            bottom.style.cssText = `
+            display: none;
+            top: 53%;
+            left: 20%;
+            `;
+            bottom.textContent = 'Есть';
+            
+            //Бегунок днища
+            collapseThree.addEventListener('click', (ev) => {
+                const indicator = collapseThree.querySelectorAll('span')[1];
+                const target = ev.target;
+                if(target === indicator){
+                    moveEl(indicator, 0, 67);
+                    if (indicator.style.right === '' || indicator.style.right === '0%'){
+                        bottom.textContent = 'Есть';
+                        bottom.style.left = '20%';
+                    } else {
+                        bottom.textContent = 'Нет';
+                        bottom.style.left = '28%';
+                    }
                 }
             });
-            
-            const stBef = getComputedStyle(onoffswitchInner, '::before');
-            if(stBef.content === 'Одно'){
-                camera = 1;
-            }
             //Калькулятор
             const count = (price = 10000) => {
                 const infoRings = blockTwo.querySelectorAll('select'),
@@ -67,12 +126,12 @@ const calcul = () => {
                 ringsFst = selectBoxes[1],
                 ringsSnd = selectBoxes[3],
                 nextStepBtn = incomeData.querySelector('.construct-btn');
-                //получить все поля ввода и результатное поле
 
                 const doCount = () => {
                     let total = 0,
                         diaMarkup = 1,
-                        ringsMarkup = 1;
+                        ringsMarkup = 1,
+                        bottomMarkup = 0;
                     //Учитываем диаметр
                     if (window.getComputedStyle(secondSump).display === 'none'){
                         if (diaFst.children[1].value === '2 метра'){
@@ -101,15 +160,22 @@ const calcul = () => {
                             ringsMarkup = 1.5;
                         }
                     }
+                    //Учитываем днище
+                    if (bottom.textContent === 'Есть'){
+                        if (window.getComputedStyle(secondSump).display === 'none'){
+                            bottomMarkup = 1000;
+                        } else {
+                            bottomMarkup = 2000;
+                        }
+                    }
                     
-                    total = price * diaMarkup * ringsMarkup;
+                    total = price * diaMarkup * ringsMarkup + bottomMarkup;
                     calcResult.value = Math.ceil(total);
                 };
                 //Расчет по индивидуальным параметрам
                 incomeData.addEventListener('change', (ev) => {
                     let target = ev.target;
-                    target = target.closest('.form-control');
-                    if (target) {
+                    if (target.closest('.form-control')) {
                         doCount(calcResult);
                     } 
                 });
@@ -121,15 +187,16 @@ const calcul = () => {
                         }
                     }
                 });
+                
                 //Запуск расчета при изменениях
                 accordion.addEventListener('click', (ev) => {
                     const target = ev.target;
                     if (calcResult.value !== ''){
-                        if (target === onoffswitchSwitch){ //если вернулись к кольцам
+                        if (target === onoffswitchSwitch || //если вернулись к кольцам
+                            target === collapseThree.querySelector('.onoffswitch-switch')){ //если вернулись к днищу
                             doCount(calcResult);
                         }
-                        console.log(target.classList.contains('onoffswitch-switch'));
-                    }
+                    } 
                 });
 
             };
