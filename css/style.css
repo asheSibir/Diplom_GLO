@@ -538,7 +538,7 @@ header .logo img {
     content: "Двух";
     padding-right: 14px;
     background-color: #EEE;
-    color: #999;
+    color: #EEE;
     text-align: right
 }
 
@@ -547,7 +547,7 @@ header .logo img {
     width: 38px;
     margin: 1px;
     height: 4.1rem;
-    background: #A1A1A1;
+    background: #93c706;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -647,7 +647,7 @@ header .logo img {
 .constructor .panel-three .bottom-septic-img {
     display: block;
     margin-left: 23rem;
-    margin-top: -10rem
+    margin-top: -6rem
 }
 
 .constructor .panel-three .construct-btn {
@@ -670,7 +670,7 @@ header .logo img {
     content: "Нет";
     padding-right: 14px;
     background-color: #EEE;
-    color: #999;
+    color: #EEE;
     text-align: right
 }
 
@@ -1039,7 +1039,25 @@ header .logo img {
     font-weight: bold;
     position: absolute;
 }
-
+.select-range {
+    -webkit-appearance: none
+}
+.select-range {
+    border-radius: 30px;
+    height: 40px;
+    border: 1px solid #EEE;
+    background-color: #EEE;
+}
+.select-range::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background-color: #93c706;
+    border: 3px solid #FFF;
+    width: 42px;
+    height: 42px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: -5px;
+} 
 @media (max-width:1199px) {
     header .logo p {
         font-size: .9rem
@@ -1307,7 +1325,7 @@ header .logo img {
     }
 
     .constructor .panel-three .bottom-septic-img {
-        margin-left: 16rem
+        margin-left: 16rem;
     }
 
     .constructor .panel-four input {

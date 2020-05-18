@@ -2,8 +2,13 @@ const calcul = () => {
     try{
         const accordion = document.getElementById('accordion'),
         collapseThree = document.getElementById('collapseThree'),
+        calcResult = document.getElementById('calc-result'),
+        constructor = document.querySelector('.constructor'),
+        myonoffswitch = document.getElementById('myonoffswitch'),
+        myonoffswitchTwo = document.getElementById('myonoffswitch-two'),
         bottom = document.createElement('span'),
         qtyCam = document.createElement('span');
+
         
         //переключение блоков
         const getBlocks = () => {
@@ -41,7 +46,23 @@ const calcul = () => {
             });
         };
         getBlocks();
-        //работа калькулятора
+        //Работа калькулятора
+        //Анимация
+        const aliveRes = (total) => {
+            const target = calcResult.value,
+            digits = target.toString().length;
+            let val = 0;
+            let updTarget;
+                let animTarget = () => {
+                    updTarget = requestAnimationFrame(animTarget);
+                    calcResult.value = val;
+                    if (val < target){
+                        val += digits * 100;
+                    }
+                };
+            updTarget = requestAnimationFrame(animTarget);
+        };
+
         const calc = (price) => {
             const onoffswitch = document.querySelector('.onoffswitch'),
             onoffswitchSwitch = onoffswitch.querySelector('.onoffswitch-switch'),
@@ -75,18 +96,17 @@ const calcul = () => {
                     secondSump.classList.add('hidden');
                     qtyCam.textContent = 'Одно';
                     qtyCam.style.left = '48%';
+                    myonoffswitch.removeAttribute('checked');
                     
                 } else {
                     onoffswitchSwitch.style.right = '0%';
                     secondSump.classList.remove('hidden');
                     qtyCam.textContent = 'Двух';
                     qtyCam.style.left = '42%';
+                    myonoffswitch.setAttribute('checked', 'checked');
                 }
                 
             });
-            const setLabel = (parent, textF, textS) => {
-
-            };
             
             //Указываем днище
             accordion.children[2].insertAdjacentElement('beforeend', bottom);
@@ -94,8 +114,8 @@ const calcul = () => {
             bottom.classList.add('green-label');
             bottom.style.cssText = `
             display: none;
-            top: 54%;
-            left: 20%;
+            margin-top: -19rem;
+            margin-left: 5rem
             `;
             bottom.textContent = 'Есть';
             
@@ -107,17 +127,18 @@ const calcul = () => {
                     moveEl(indicator, 0, 67);
                     if (indicator.style.right === '' || indicator.style.right === '0%'){
                         bottom.textContent = 'Есть';
-                        bottom.style.left = '20%';
+                        bottom.style.marginLeft = '5rem';
+                        myonoffswitchTwo.setAttribute('checked', 'checked');
                     } else {
                         bottom.textContent = 'Нет';
-                        bottom.style.left = '30%';
+                        bottom.style.marginLeft = '8rem';
+                        myonoffswitchTwo.removeAttribute('checked');
                     }
                 }
             });
             //Калькулятор
             const count = (price = 10000) => {
                 const infoRings = blockTwo.querySelectorAll('select'),
-                calcResult = document.getElementById('calc-result'),
                 incomeData = document.getElementById('collapseTwo'),
                 selectBoxes = incomeData.querySelectorAll('.select-box'),
                 diaFst = selectBoxes[0],
@@ -167,9 +188,16 @@ const calcul = () => {
                             bottomMarkup = 2000;
                         }
                     }
-
+                    
                     total = price * diaMarkup * ringsMarkup + bottomMarkup;
                     calcResult.value = Math.ceil(total);
+                    constructor.addEventListener('change', (ev) => {
+                        if (calcResult.value !== ''){
+                            aliveRes(price * diaMarkup * ringsMarkup + bottomMarkup);
+                        }
+                    });
+
+                    
                 };
                 //Расчет по индивидуальным параметрам
                 incomeData.addEventListener('change', (ev) => {

@@ -34,9 +34,9 @@ const sendData = () => {
                     } else {
                         hideMistake(ev.target);
                     }
-                    
                 }
                 if (ev.target.matches('[name="user_phone"]')){
+                    
                     if (/[a-zа-я\s\-\.\?\,!:;^%$#@\(\)\*_\=#'"\/]/gi.test(target) || 
                     /[a-zа-я\s\-\.\?\,!:;^%$#@\(\)\*_\=#'"\/]/gi.test(target.slice(-1))){
                         showMistake(ev.target);

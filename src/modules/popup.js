@@ -31,7 +31,7 @@ const movePopUp = () => {
         });
         //Закрытие POPUP
         document.body.addEventListener('click', (ev) => {
-
+            ev.preventDefault();
             if (ev.target.closest('.popup-close') || //нажатие на крестик
                 ev.target.closest('.popup-content') && ev.target.tagName !== 'INPUT' && ev.target.tagName !== 'BUTTON' ||
                 //нажатие на поле popup, кроме инпутов и кнопки
