@@ -65,14 +65,17 @@ const sendData = () => {
         }; 
         
         //ОТПРАВКА ФОРМЫ 
-        document.addEventListener('submit', (ev) => {
-            console.log(ev);
-        });
-        forms.forEach((form) => {
-            form.addEventListener('submit', (ev) => {
-                console.log(111);
-            });    
-        });
+        // const submits = document.querySelectorAll('[name="submit"]');
+        // submits.forEach(submit => {
+        //     submit.addEventListener('click', (ev) => {
+        //         event.preventDefault();
+        //         const formData = new FormData(form);
+
+        //     });
+        // });
+        
+        
+        
 
     } catch(e){
         console.warn(e);
