@@ -1,6 +1,7 @@
 const calcul = () => {
     try{
         const accordion = document.getElementById('accordion'),
+        inputs = accordion.querySelectorAll('input'),
         collapseThree = document.getElementById('collapseThree'),
         calcResult = document.getElementById('calc-result'),
         constructor = document.querySelector('.constructor'),
@@ -8,15 +9,16 @@ const calcul = () => {
         myonoffswitchTwo = document.getElementById('myonoffswitch-two'),
         bottom = document.createElement('span'),
         qtyCam = document.createElement('span');
-
-        
+       
         //переключение блоков
         const getBlocks = () => {
             accordion.addEventListener('click', (ev)=> {
                 ev.preventDefault();
+                const panelBody = document.querySelectorAll('.panel-body');
+                console.log(panelBody[2].style.display === 'block');
                 const target = ev.target,
                     openedEl = accordion.querySelector('.collapse.in'),
-                        openBlock = openedEl.parentNode;
+                    openBlock = openedEl.parentNode;
                 if(target.innerText === 'Следующий шаг'){
                     const nextBlock = openBlock.nextElementSibling,
                         next = nextBlock.querySelector('.panel-collapse');
@@ -32,10 +34,11 @@ const calcul = () => {
                         current.parentNode.children[1].classList.add('in');
                     }
                 }
-                if(!target.closest('.panel-three') || target.innerText === 'Следующий шаг'){
-                    bottom.style.display = 'none'; 
+                if(target.closest('.panel-three') || 
+                target.innerText === 'Следующий шаг' && target.closest('#collapseTwo')){
+                    bottom.style.display = 'block'; 
                 } else {
-                    bottom.style.display = 'block';
+                    bottom.style.display = 'none';
                 } 
                 if(!target.closest('.panel-one') || target.innerText === 'Следующий шаг'){
                     qtyCam.style.display = 'none';
@@ -118,7 +121,7 @@ const calcul = () => {
             margin-top: -19rem;
             margin-left: 5rem
             `;
-            bottom.textContent = 'Есть';
+            bottom.textContent = 'Нет';
             
             //Бегунок днища
             collapseThree.addEventListener('click', (ev) => {
@@ -127,15 +130,13 @@ const calcul = () => {
                 if(target === indicator){
                     moveEl(indicator, 0, 67);
                     if (indicator.style.right === '' || indicator.style.right === '0%'){
-                        bottom.textContent = 'Есть';
+                        bottom.textContent = 'Нет';
                         bottom.style.marginLeft = '5rem';
                         myonoffswitchTwo.setAttribute('checked', 'checked');
                     } else {
-                        bottom.textContent = 'Нет';
+                        bottom.textContent = 'Есть';
                         bottom.style.marginLeft = '8rem';
                         myonoffswitchTwo.removeAttribute('checked');
-                        const extraDisc = document.createElement('p');
-
                     }
                 }
             });
@@ -194,9 +195,10 @@ const calcul = () => {
                     
                     total = price * diaMarkup * ringsMarkup + bottomMarkup;
                     calcResult.value = Math.ceil(total);
-                    constructor.addEventListener('change', (ev) => {
-                        if (calcResult.value !== ''){
-                            aliveRes();
+                    accordion.addEventListener('click', (ev) => {
+                        if (ev.target.classList.contains('onoffswitch-switch') || 
+                            ev.target.classList.contains('form-control')){
+                                aliveRes();
                         }
                     });
 
