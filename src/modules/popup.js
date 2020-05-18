@@ -28,6 +28,12 @@ const movePopUp = () => {
             if (target.closest('.consultation-btn')){
                 showEl(document.querySelector('.popup-consultation'));
             }
+            if (target.closest('.main-form-btn')){
+                showEl(document.querySelector('.popup-consultation'));
+            }
+            if (target.closest('.capture-form-btn')){
+                showEl(document.querySelector('.popup-discount'));
+            }
         });
         //Закрытие POPUP
         document.body.addEventListener('click', (ev) => {

@@ -3,7 +3,8 @@ const showMore = () => {
         const more = document.querySelector('.add-sentence-btn'),
         specialOffers = document.querySelectorAll('.shadow-block'),
         offerFourth = document.querySelector('.visible-sm-block'),
-        level = document.querySelectorAll('.sentence-btn')[2];
+        level = document.querySelectorAll('.sentence-btn')[2],
+        hideBtn = more.cloneNode(true);
         
         const animatedScroll = () => { //перемещение к открывшимся предложениям
             const posY = offerFourth.getBoundingClientRect().top + window.pageYOffset;
@@ -31,6 +32,7 @@ const showMore = () => {
             animatedScroll();
             specialOffers[5].children[1].children[0].style.height = '90%'; //уменьшаем картинку (странность верстки)
             more.style.display = 'none'; //убираем кнопку "больше"
+            specialOffers.insertAdjacentElement('beforeend', hideBtn);
         };
         more.addEventListener('click', (ev) => {
             ev.preventDefault();

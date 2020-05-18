@@ -48,9 +48,10 @@ const calcul = () => {
         getBlocks();
         //Работа калькулятора
         //Анимация
-        const aliveRes = (total) => {
+        const aliveRes = () => {
             const target = calcResult.value,
-            digits = target.toString().length;
+            digits = target.toString().length,
+            bottomExist = document.getElementById('bottomExist');
             let val = 0;
             let updTarget;
                 let animTarget = () => {
@@ -103,7 +104,7 @@ const calcul = () => {
                     secondSump.classList.remove('hidden');
                     qtyCam.textContent = 'Двух';
                     qtyCam.style.left = '42%';
-                    myonoffswitch.setAttribute('checked', 'checked');
+                    myonoffswitch.setAttribute('checked', 'true');
                 }
                 
             });
@@ -133,6 +134,8 @@ const calcul = () => {
                         bottom.textContent = 'Нет';
                         bottom.style.marginLeft = '8rem';
                         myonoffswitchTwo.removeAttribute('checked');
+                        const extraDisc = document.createElement('p');
+
                     }
                 }
             });
@@ -193,7 +196,7 @@ const calcul = () => {
                     calcResult.value = Math.ceil(total);
                     constructor.addEventListener('change', (ev) => {
                         if (calcResult.value !== ''){
-                            aliveRes(price * diaMarkup * ringsMarkup + bottomMarkup);
+                            aliveRes();
                         }
                     });
 
