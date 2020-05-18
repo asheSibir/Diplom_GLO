@@ -7,9 +7,10 @@ import movePopUp from './modules/popup';
 import sendData from './modules/sendData';
 import moveAccordion from './modules/accordion';
 import calcul from './modules/calcul';
+import showMore from './modules/showMore';
 
 //ЗАПУСК ФУНКЦИЙ
-//POPUP
+//POPUP (все 4)
 movePopUp();
 //отправка формы
 sendData();
@@ -17,4 +18,8 @@ sendData();
 moveAccordion();
 //калькулятор
 calcul();
+//"больше!"
+showMore();
+
+
 

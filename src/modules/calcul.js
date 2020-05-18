@@ -1,6 +1,5 @@
 const calcul = () => {
     try{
-        console.log('подключение калькулятора');
         const accordion = document.getElementById('accordion'),
         collapseThree = document.getElementById('collapseThree'),
         bottom = document.createElement('span'),
@@ -95,7 +94,7 @@ const calcul = () => {
             bottom.classList.add('green-label');
             bottom.style.cssText = `
             display: none;
-            top: 53%;
+            top: 54%;
             left: 20%;
             `;
             bottom.textContent = 'Есть';
@@ -111,7 +110,7 @@ const calcul = () => {
                         bottom.style.left = '20%';
                     } else {
                         bottom.textContent = 'Нет';
-                        bottom.style.left = '28%';
+                        bottom.style.left = '30%';
                     }
                 }
             });
@@ -168,7 +167,7 @@ const calcul = () => {
                             bottomMarkup = 2000;
                         }
                     }
-                    
+
                     total = price * diaMarkup * ringsMarkup + bottomMarkup;
                     calcResult.value = Math.ceil(total);
                 };
