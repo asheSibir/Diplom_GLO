@@ -4,16 +4,47 @@ try{
         errorMessage = 'Что-то пошло не так...',
         loadMessage = 'Загрузка...',
         successsMessage = 'Спасибо! Мы скоро с Вами свяжемся!';
+    //ЛОАДЕР
+    const preloader = 
+        `<div id="loader" class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>`; 
 
+    // ОТПРАВКА ДАННЫХ
     forms.forEach(form => {
-        const smallText = form.querySelector('.small');
+        const submit = form.querySelector('[name="submit"]');
+        const btnText = submit.innerText;
         form.addEventListener('click', (ev) => {
             if(ev.target.name === 'submit'){
                 form.querySelectorAll('input').forEach(input => {
                     if(input.value !== '' && !form.querySelector('#warn-div')){
                         ev.preventDefault();
-                        smallText.textContent = loadMessage;
-                        smallText.style.cssText = 'font-size: 2rem; color: #19b5fe';
+                        // Сообщение статусе ЗАГРУЗКА
+                        const showMessage = () => {
+                            const textLength = loadMessage.length,
+                                textArr = loadMessage.split('');
+                            let count = 0;
+                            submit.innerText = ' ';
+                            let showStatus;
+                            let aliveStatus = () => {
+                            showStatus = requestAnimationFrame(aliveStatus);
+                                if (count < textLength){
+                                    submit.innerText += textArr[count];
+                                    count++;
+                                }
+                            };
+                            showStatus = requestAnimationFrame(aliveStatus);
+                        };
+                        showMessage();
+                        form.insertAdjacentHTML('beforeend', preloader);
+                        document.getElementById('loader').style.zIndex = 10;
                         const formData = new FormData(form); 
                         let body = {};
                         for (let val of formData.entries()) {
@@ -36,24 +67,29 @@ try{
                             }                 
                         })
                         .then((data) => {
-                            console.log(852);  
+                            document.getElementById('loader').remove();
+                            setTimeout(() => {
+                                submit.innerText = successsMessage;
+                            }, 500);
+                            setTimeout(() => {
+                                submit.innerText = btnText;
+                            }, 4000);
+                            setTimeout(() => {
+                                submit.closest('.popup').display = 'none';
+                                input.value = '';
+                            }, 8000);
                         })
                         .catch((err) => {
                             console.warn(err);
-                            smallText.textContent = errorMessage;
+                            submit.innerText = errorMessage;
                             setTimeout(() => {
-                                smallText.textContent = 'Попробуйте еще раз или позвоните нам! Мы ответим на все Ваши вопросы';
-                                smallText.style.cssText = `
-                                font-size: 1.5rem;
-                                font-weight: bold;
-                                padding: 0 3.3em;
-                                color: #f3960d;
-                                `;
-                            }, 2000);
+                                submit.innerText = `Попробуйте попозже. 
+                                Или перезвоните нам!`;
+                            }, 4000);
                             setTimeout(() => {
                                 input.value = '';
-                                smallText.textContent = '';
-                            }, 5000);
+                                submit.innerText = btnText;
+                            }, 8000);
                         });
                     }
                 });

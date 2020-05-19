@@ -15,8 +15,8 @@ import postData from './modules/postData';
 movePopUp();
 //работа формы
 sendData();
-//отправвк формы
-postData();
+// //отправвк формы
+// postData();
 // аккордеон
 moveAccordion();
 //калькулятор

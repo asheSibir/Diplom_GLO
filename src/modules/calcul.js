@@ -1,10 +1,8 @@
 const calcul = () => {
     try{
         const accordion = document.getElementById('accordion'),
-        inputs = accordion.querySelectorAll('input'),
         collapseThree = document.getElementById('collapseThree'),
         calcResult = document.getElementById('calc-result'),
-        constructor = document.querySelector('.constructor'),
         myonoffswitch = document.getElementById('myonoffswitch'),
         myonoffswitchTwo = document.getElementById('myonoffswitch-two'),
         bottom = document.createElement('span'),
@@ -15,7 +13,6 @@ const calcul = () => {
             accordion.addEventListener('click', (ev)=> {
                 ev.preventDefault();
                 const panelBody = document.querySelectorAll('.panel-body');
-                console.log(panelBody[2].style.display === 'block');
                 const target = ev.target,
                     openedEl = accordion.querySelector('.collapse.in'),
                     openBlock = openedEl.parentNode;
@@ -69,11 +66,10 @@ const calcul = () => {
 
         const calc = (price) => {
             const onoffswitch = document.querySelector('.onoffswitch'),
-            onoffswitchSwitch = onoffswitch.querySelector('.onoffswitch-switch'),
-            onoffswitchInner = onoffswitch.querySelector('.onoffswitch-inner'),
-            blockTwo = document.getElementById('collapseTwo'),
-            secondSump = document.getElementById('second');
-            secondSump.style.display = 'block';
+                onoffswitchSwitch = onoffswitch.querySelector('.onoffswitch-switch'),
+                blockTwo = document.getElementById('collapseTwo'),
+                secondSump = document.getElementById('second');
+                secondSump.style.display = 'block';
 
             //Работа бегунка
             const moveEl = (el, inPos, nextPos) => {
