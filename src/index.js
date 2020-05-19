@@ -9,6 +9,7 @@ import moveAccordion from './modules/accordion';
 import calcul from './modules/calcul';
 import showMore from './modules/showMore';
 import postData from './modules/postData';
+import postForma from './modules/postForma';
 
 //ЗАПУСК ФУНКЦИЙ
 //POPUP (все 4)
@@ -17,6 +18,7 @@ movePopUp();
 sendData();
 // //отправвк формы
 // postData();
+postForma();
 // аккордеон
 moveAccordion();
 //калькулятор
