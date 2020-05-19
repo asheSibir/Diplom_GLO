@@ -10,6 +10,7 @@ import calcul from './modules/calcul';
 import showMore from './modules/showMore';
 import postData from './modules/postData';
 import postForma from './modules/postForma';
+import putInStorage from './modules/putInStorage';
 
 //ЗАПУСК ФУНКЦИЙ
 //POPUP (все 4)
@@ -25,6 +26,8 @@ moveAccordion();
 calcul();
 //"больше!"
 showMore();
+//хранение ввода
+putInStorage();
 
 
 

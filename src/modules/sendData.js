@@ -97,13 +97,15 @@ const sendData = () => {
                     for (let val of formData.entries()) {
                     body[val[0]] = val[1];
                     }
-                    const postData = (body) => { 
+                    const storageData = JSON.stringify(sessionStorage);
+                    const fullBody = [body, storageData];
+                    const postData = (fullBody) => { 
                         return fetch('server.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(body), 
+                            body: JSON.stringify(fullBody), 
                             credentials: 'include'
                         }); 
                     };
@@ -119,17 +121,17 @@ const sendData = () => {
                                 submit.innerText = btnText;
                                 form.querySelectorAll('input').forEach(input => {
                                     input.value = '';
-                                    console.dir(input);
                                 });
                             }, 4000);
                             setTimeout(() => {
+                                sessionStorage.clear();
                                 if (form.closest('.popup')){
                                     form.closest('.popup').style.display = 'none';
                                 }
                             }, 8000);
                         }                                    
                     };
-                    postData(body)
+                    postData(fullBody)
                     .then((response) => {
                         if(response.status !== 200){
                             throw new Error(response.statusText);
@@ -147,7 +149,10 @@ const sendData = () => {
                             Или перезвоните нам!`;
                         }, 4000);
                         setTimeout(() => {
-                            input.value = '';
+                            sessionStorage.clear();
+                            form.querySelectorAll('input').forEach(input => {
+                                input.value = '';
+                            });
                             submit.innerText = btnText;
                         }, 8000);
                     });
