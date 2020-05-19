@@ -65,83 +65,97 @@ const sendData = () => {
 
         // ОТПРАВКА ДАННЫХ
         forms.forEach(form => {
-            const submit = form.querySelector('[name="submit"]');
-            const btnText = submit.innerText;
-            form.addEventListener('click', (ev) => {
-                if(ev.target.name === 'submit'){
-                    form.querySelectorAll('input').forEach(input => {
-                        if(input.value !== '' && !form.querySelector('#warn-div')){
-                            ev.preventDefault();
-                            // Сообщение статусе ЗАГРУЗКА
-                            const showMessage = () => {
-                                const textLength = loadMessage.length,
-                                    textArr = loadMessage.split('');
-                                let count = 0;
-                                submit.innerText = ' ';
-                                let showStatus;
-                                let aliveStatus = () => {
-                                showStatus = requestAnimationFrame(aliveStatus);
-                                    if (count < textLength){
-                                        submit.innerText += textArr[count];
-                                        count++;
-                                    }
+            
+                
+                const submit = form.querySelector('[name="submit"]');
+                const btnText = submit.innerText;
+                form.addEventListener('click', (ev) => {
+                    if(ev.target.name === 'submit'){
+                        form.querySelectorAll('input').forEach(input => {
+                            if(input.value !== '' && !form.querySelector('#warn-div')){
+                                ev.preventDefault();
+                                
+                                if(!form.classList.contains('director-form')){
+                                    form.insertAdjacentHTML('beforeend', preloader);
+                                    document.getElementById('loader').style.zIndex = 10;
+                                    // Сообщение статусе ЗАГРУЗКА
+                                    const showMessage = () => {
+                                    const textLength = loadMessage.length,
+                                        textArr = loadMessage.split('');
+                                    let count = 0;
+                                    submit.innerText = ' ';
+                                    let showStatus;
+                                    let aliveStatus = () => {
+                                    showStatus = requestAnimationFrame(aliveStatus);
+                                        if (count < textLength){
+                                            submit.innerText += textArr[count];
+                                            count++;
+                                        }
+                                    };
+                                    showStatus = requestAnimationFrame(aliveStatus);
                                 };
-                                showStatus = requestAnimationFrame(aliveStatus);
-                            };
-                            showMessage();
-                            form.insertAdjacentHTML('beforeend', preloader);
-                            document.getElementById('loader').style.zIndex = 10;
-                            const formData = new FormData(form); 
-                            let body = {};
-                            for (let val of formData.entries()) {
-                            body[val[0]] = val[1];
+                                showMessage();
+                                }
+                                
+                                const formData = new FormData(form); 
+                                let body = {};
+                                for (let val of formData.entries()) {
+                                body[val[0]] = val[1];
+                                }
+                                const postData = (body) => { 
+                                    return fetch('server.php', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(body), 
+                                        credentials: 'include'
+                                    }); 
+                                };
+                                const successFin = () => {
+                                    if(!form.classList.contains('director-form')){
+                                        if (document.getElementById('loader')){
+                                            document.getElementById('loader').remove();
+                                        }
+                                        setTimeout(() => {
+                                            submit.innerText = successsMessage;
+                                        }, 500);
+                                        setTimeout(() => {
+                                            submit.innerText = btnText;
+                                        }, 4000);
+                                        setTimeout(() => {
+                                            submit.closest('.popup').display = 'none';
+                                            input.value = '';
+                                        }, 8000);
+                                    }                                    
+                                }
+                                postData(body)
+                                .then((response) => {
+                                    if(response.status !== 200){
+                                        throw new Error(response.statusText);
+                                    }              
+                                })
+                                .then((data) => {
+                                    successFin();
+                                })
+                                .catch((err) => {
+                                    console.warn(err);
+                                    submit.innerText = errorMessage;
+                                    document.getElementById('loader').remove();
+                                    setTimeout(() => {
+                                        submit.innerText = `Попробуйте попозже. 
+                                        Или перезвоните нам!`;
+                                    }, 4000);
+                                    setTimeout(() => {
+                                        input.value = '';
+                                        submit.innerText = btnText;
+                                    }, 8000);
+                                });
                             }
-                            const postData = (body) => { 
-                                return fetch('server.php', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(body), 
-                                    credentials: 'include'
-                                }); 
-                            };
-                            postData(body)
-                            .then((response) => {
-                                if(response.status !== 200){
-                                    throw new Error(response.statusText);
-                                }              
-                            })
-                            .then((data) => {
-                                document.getElementById('loader').remove();
-                                setTimeout(() => {
-                                    submit.innerText = successsMessage;
-                                }, 500);
-                                setTimeout(() => {
-                                    submit.innerText = btnText;
-                                }, 4000);
-                                setTimeout(() => {
-                                    submit.closest('.popup').display = 'none';
-                                    input.value = '';
-                                }, 8000);
-                            })
-                            .catch((err) => {
-                                console.warn(err);
-                                submit.innerText = errorMessage;
-                                document.getElementById('loader').remove();
-                                setTimeout(() => {
-                                    submit.innerText = `Попробуйте попозже. 
-                                    Или перезвоните нам!`;
-                                }, 4000);
-                                setTimeout(() => {
-                                    input.value = '';
-                                    submit.innerText = btnText;
-                                }, 8000);
-                            });
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            
         });
     } catch(e){
         console.warn(e);

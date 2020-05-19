@@ -41,7 +41,10 @@ const postForma = () => {
                             showStatus = requestAnimationFrame(aliveStatus);
                         };
                         showMessage();
-                        form.insertAdjacentHTML('beforeend', preloader);
+
+                        if (!form.classList.contains('director-form')){
+                            form.insertAdjacentHTML('beforeend', preloader);
+                        }
                         document.getElementById('loader').style.zIndex = 10;
                         const formData = new FormData(form); 
                         let body = {};
@@ -67,6 +70,9 @@ const postForma = () => {
                         .then((data) => {
                             document.getElementById('loader').remove();
                             setTimeout(() => {
+                                if (submit.classList.contains('director-btn')){
+                                    submit.style.fontSize = '1rem';
+                                }
                                 submit.innerText = successsMessage;
                             }, 500);
                             setTimeout(() => {
