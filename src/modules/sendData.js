@@ -126,6 +126,7 @@ const sendData = () => {
                                         setTimeout(() => {
                                             submit.closest('.popup').display = 'none';
                                             input.value = '';
+                                            form.closest('.popup').style.display = 'none';
                                         }, 8000);
                                     }                                    
                                 }

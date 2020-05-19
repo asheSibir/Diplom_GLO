@@ -42,10 +42,10 @@ const postForma = () => {
                         };
                         showMessage();
 
-                        if (!form.classList.contains('director-form')){
-                            form.insertAdjacentHTML('beforeend', preloader);
-                        }
-                        document.getElementById('loader').style.zIndex = 10;
+                        // if (!form.classList.contains('director-form')){
+                        //     form.insertAdjacentHTML('beforeend', preloader);
+                        // }
+                        // document.getElementById('loader').style.zIndex = 10;
                         const formData = new FormData(form); 
                         let body = {};
                         for (let val of formData.entries()) {
@@ -68,7 +68,9 @@ const postForma = () => {
                             }                 
                         })
                         .then((data) => {
-                            document.getElementById('loader').remove();
+                            // if (document.getElementById('loader')){
+                            //     document.getElementById('loader').remove();
+                            // }
                             setTimeout(() => {
                                 if (submit.classList.contains('director-btn')){
                                     submit.style.fontSize = '1rem';
