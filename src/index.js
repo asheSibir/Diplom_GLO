@@ -12,6 +12,7 @@ import 'es6-promise';
 import 'fetch-polyfill';
 import 'whatwg-fetch';
 import 'scroll-behavior-polyfill';
+import 'computed-style';
 
 
 

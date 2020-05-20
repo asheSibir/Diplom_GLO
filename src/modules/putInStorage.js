@@ -6,7 +6,7 @@ const putInStorage = () => {
             onoffswitchSwitch = document.querySelectorAll('.onoffswitch-switch');
         document.addEventListener('change', (ev) => {
             if (ev.target.matches('[name="user_quest"]')){
-                sessionStorage.userQuest = encodeURI(ev.target.value);
+                sessionStorage.userQuest = (ev.target.value);
             }
         });
         document.addEventListener('click', (ev) => {
@@ -16,10 +16,10 @@ const putInStorage = () => {
                 } else {
                     switch (ind) {
                         case 0:
-                            sessionStorage.qtySump = encodeURI(cameraSpan.innerText);
+                            sessionStorage.qtySump = (cameraSpan.innerText);
                             break;
                         case 1:
-                            sessionStorage.qtyRings = encodeURI(bottomExist.innerText);
+                            sessionStorage.qtyRings = (bottomExist.innerText);
                             break;
                         default:
                             console.warn('Как-то не так...');
@@ -32,16 +32,16 @@ const putInStorage = () => {
                 } else {
                     switch (ind) {
                         case 0:
-                            sessionStorage.fstDia = encodeURI(select.value);
+                            sessionStorage.fstDia = (select.value);
                             break;
                         case 1:
-                            sessionStorage.fstRings = encodeURI(select.value);
+                            sessionStorage.fstRings = (select.value);
                             break;
                         case 2:
-                            sessionStorage.sndDia = encodeURI(select.value);
+                            sessionStorage.sndDia = (select.value);
                             break;
                         case 3:
-                            sessionStorage.sndRings = encodeURI(select.value);
+                            sessionStorage.sndRings = (select.value);
                             break;
                         default:
                             console.warn('Как-то не так...');

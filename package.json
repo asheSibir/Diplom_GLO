@@ -33,6 +33,7 @@
     "Babel": "0.0.1",
     "array.prototype.entries": "^1.0.0",
     "closest-polyfill": "^1.0.0",
+    "computed-style": "github:twolfson/computedStyle",
     "element-closest": "^3.0.2",
     "element-matches-polyfill": "^1.0.0",
     "element-remove": "^1.0.4",
